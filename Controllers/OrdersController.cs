@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using RelicsAPI.Data.DTOs.Orders;
+using RelicsAPI.Data.DTOs.Relics;
 using RelicsAPI.Data.Entities;
 using RelicsAPI.Data.Repositories;
 
@@ -14,13 +15,13 @@ namespace RelicsAPI.Controllers
     public class OrdersController : ControllerBase
     {
         private readonly IOrdersRepository _ordersRepository;
-        //private readonly IRelicsRepository _relicsRepository;
+        private readonly IRelicsRepository _relicsRepository;
         private readonly IMapper _mapper;
 
-        public OrdersController(IOrdersRepository ordersRepository, IMapper mapper)
+        public OrdersController(IOrdersRepository ordersRepository, IMapper mapper, IRelicsRepository relicsRepository)
         {
             _ordersRepository = ordersRepository;
-            //_relicsRepository = relicsRepository;
+            _relicsRepository = relicsRepository;
             _mapper = mapper;
         }
 
@@ -42,14 +43,11 @@ namespace RelicsAPI.Controllers
 
             return Ok(_mapper.Map<OrderDTO>(order));
         }
-
+        
         [HttpPost]
         public async Task<ActionResult<OrderDTO>> Create(CreateOrderDTO orderDTO)
         {
             var order = _mapper.Map<Order>(orderDTO);
-            //var randomRelic = (await _relicsRepository.GetAll(1)).First();
-
-            //order.Relics.Add(randomRelic);
 
             await _ordersRepository.Create(order);
 

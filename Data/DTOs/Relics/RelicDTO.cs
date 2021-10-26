@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace RelicsAPI.Data.DTOs.Relics
 {
-    public record RelicDTO(int Id, string Name, string Creator, decimal Price, string Period, int YearMade);
+    public record RelicDTO(int Id, string Name, byte[] Image, List<string> Materials, string Creator, decimal Price, string Period, string YearMade, int CategoryId);
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RelicsAPI.Data;
 
 namespace RelicsAPI.Migrations
 {
     [DbContext(typeof(RelicsContext))]
-    partial class RelicsContextModelSnapshot : ModelSnapshot
+    [Migration("20211014173301_added image")]
+    partial class addedimage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,7 +65,6 @@ namespace RelicsAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -102,8 +103,8 @@ namespace RelicsAPI.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("YearMade")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("YearMade")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
