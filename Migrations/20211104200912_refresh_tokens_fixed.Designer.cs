@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RelicsAPI.Data;
 
 namespace RelicsAPI.Migrations
 {
     [DbContext(typeof(RelicsContext))]
-    partial class RelicsContextModelSnapshot : ModelSnapshot
+    [Migration("20211104200912_refresh_tokens_fixed")]
+    partial class refresh_tokens_fixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

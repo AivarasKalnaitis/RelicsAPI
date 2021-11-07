@@ -5,14 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RelicsAPI.Data.Entities;
 using System.Text.Json;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using RelicsAPI.Data.DTOs.Auth;
 
 namespace RelicsAPI.Data
 {
-    public class RelicsContext : DbContext
+    public class RelicsContext : IdentityDbContext<User>
     {
         public DbSet<Category> Categories { get; set; }
         public DbSet<Relic> Relics { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -21,6 +24,8 @@ namespace RelicsAPI.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
             builder.Entity<Relic>().Property(p => p.Materials)
                 .HasConversion(
                     v => JsonSerializer.Serialize(v, default),

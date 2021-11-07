@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RelicsAPI.Auth.Model;
 using RelicsAPI.Data.DTOs.Relics;
 using RelicsAPI.Data.Entities;
 using RelicsAPI.Data.Repositories;
@@ -11,6 +13,7 @@ using RelicsAPI.Data.Repositories;
 namespace RelicsAPI.Controllers
 {
     [ApiController]
+    [Authorize(Roles = UserRoles.Admin)]
     public class RelicsController : ControllerBase
     {
         private readonly ICategoriesRepository _categoriesRepository;
@@ -25,6 +28,7 @@ namespace RelicsAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("api/categories/{categoryId}/relics")]
         public async Task<IEnumerable<RelicDTO>> GetAll(int categoryId)
         {
@@ -34,6 +38,7 @@ namespace RelicsAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("api/categories/{categoryId}/relics/{relicId}")]
         public async Task<ActionResult<RelicDTO>> GetById(int categoryId, int relicId)
         {
@@ -45,38 +50,39 @@ namespace RelicsAPI.Controllers
             return Ok(_mapper.Map<RelicDTO>(relic));
         }
 
-        //[HttpGet]
-        //[Route("api/relics/all")]
-        //public async Task<IEnumerable<RelicDTO>> GetAllFromAllCategories(string sortOrder)
-        //{
-        //    var categories = await _categoriesRepository.GetAll();
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("api/relics")]
+        public async Task<IEnumerable<RelicDTO>> GetAllFromAllCategories(string sortOrder)
+        {
+            var categories = await _categoriesRepository.GetAll();
 
-        //    var allRelics = new List<Relic>();
+            var allRelics = new List<Relic>();
 
-        //    foreach (var category in categories)
-        //    {
-        //        var relics = await _relicsRepository.GetAll(category.Id);
-        //        allRelics.AddRange(relics);
-        //    }
+            foreach (var category in categories)
+            {
+                var relics = await _relicsRepository.GetAll(category.Id);
+                allRelics.AddRange(relics);
+            }
 
-        //    switch (sortOrder)
-        //    {
-        //        case "asc(name)":
-        //            allRelics = allRelics.OrderBy(r => r.Name).ToList();
-        //            break;
-        //        case "desc(name)":
-        //            allRelics = allRelics.OrderByDescending(r => r.Name).ToList();
-        //            break;
-        //        case "asc(price)":
-        //            allRelics = allRelics.OrderBy(r => r.Price).ToList();
-        //            break;
-        //        case "desc(price)":
-        //            allRelics = allRelics.OrderByDescending(r => r.Price).ToList();
-        //            break;
-        //    }
+            switch (sortOrder)
+            {
+                case "asc(name)":
+                    allRelics = allRelics.OrderBy(r => r.Name).ToList();
+                    break;
+                case "desc(name)":
+                    allRelics = allRelics.OrderByDescending(r => r.Name).ToList();
+                    break;
+                case "asc(price)":
+                    allRelics = allRelics.OrderBy(r => r.Price).ToList();
+                    break;
+                case "desc(price)":
+                    allRelics = allRelics.OrderByDescending(r => r.Price).ToList();
+                    break;
+            }
 
-        //    return allRelics.Select(o => _mapper.Map<RelicDTO>(o));
-        //}
+            return allRelics.Select(o => _mapper.Map<RelicDTO>(o));
+        }
 
         [HttpPost]
         [Route("api/categories/{categoryId}/relics")]

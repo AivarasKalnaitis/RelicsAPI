@@ -6,7 +6,5 @@ using RelicsAPI.Data.Entities;
 
 namespace RelicsAPI.Data.DTOs.Orders
 {
-    public record OrderDTO(int Id, string Status, ICollection<Relic> Relics)
-    {
-    }
+    public record OrderDTO(int Id, string Status, ICollection<Relic> Relics);
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using RelicsAPI.Data.DTOs.Auth;
 using RelicsAPI.Data.DTOs.Categories;
 using RelicsAPI.Data.DTOs.Orders;
 using RelicsAPI.Data.DTOs.Relics;
@@ -25,6 +26,8 @@ namespace RelicsAPI
             CreateMap<Order, OrderDTO>();
             CreateMap<CreateOrderDTO, Order>();
             CreateMap<UpdateOrderDTO, Order>();
+
+            CreateMap<User, UserDTO>();
         }
     }
 }

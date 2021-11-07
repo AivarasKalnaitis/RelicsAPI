@@ -2,7 +2,9 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RelicsAPI.Auth.Model;
 using RelicsAPI.Data.DTOs.Categories;
 using RelicsAPI.Data.Entities;
 using RelicsAPI.Data.Repositories;
@@ -10,6 +12,7 @@ using RelicsAPI.Data.Repositories;
 namespace RelicsAPI.Controllers
 {
     [ApiController]
+    [Authorize(Roles = UserRoles.Admin)]
     [Route("api/categories")]
     public class CategoriesController: ControllerBase
     {
@@ -23,6 +26,7 @@ namespace RelicsAPI.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IEnumerable<CategoryDTO>> GetAll()
         {
             return (await _categoriesRepository.GetAll()).Select(o => _mapper.Map<CategoryDTO>(o));
@@ -34,7 +38,7 @@ namespace RelicsAPI.Controllers
             var category = await _categoriesRepository.GetById(categoryId);
 
             if (category == null)
-                return NotFound();
+                return NotFound($"Category with id {categoryId} does not exist");
 
             return Ok(_mapper.Map<CategoryDTO>(category));
         }
@@ -55,7 +59,7 @@ namespace RelicsAPI.Controllers
             var category = await _categoriesRepository.GetById(categoryId);
 
             if (category == null)
-                return NotFound();
+                return NotFound($"Category with id {categoryId} doesn not exist");
 
             _mapper.Map(categoryDTO, category);
 
@@ -70,7 +74,7 @@ namespace RelicsAPI.Controllers
             var category = await _categoriesRepository.GetById(categoryId);
 
             if (category == null)
-                return NotFound();
+                return NotFound($"Category with id {categoryId} doesn not exist");
 
             await _categoriesRepository.Delete(category);
 

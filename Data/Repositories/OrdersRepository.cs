@@ -12,6 +12,7 @@ namespace RelicsAPI.Data.Repositories
     public interface IOrdersRepository
     {
         Task<List<Order>> GetAll();
+        Task<List<Order>> GetAllCurrentUser(string userId);
         Task<Order> GetById(int orderId);
         Task Create(Order order);
         Task Update(Order order);
@@ -32,6 +33,11 @@ namespace RelicsAPI.Data.Repositories
         public async Task<List<Order>> GetAll()
         {
             return await _relicsContext.Orders.ToListAsync();
+        }
+
+        public async Task<List<Order>> GetAllCurrentUser(string userId)
+        {
+            return await _relicsContext.Orders.Where(o => o.UserId == userId).ToListAsync();
         }
 
         public async Task<Order> GetById(int orderId)

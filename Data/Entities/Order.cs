@@ -1,11 +1,14 @@
-﻿using System;
+﻿using RelicsAPI.Auth.Model;
+using RelicsAPI.Data.DTOs.Auth;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace RelicsAPI.Data.Entities
 {
-    public class Order
+    public class Order : IUserOwnedResource
     {
         public int Id { get; set; }
 
@@ -14,8 +17,12 @@ namespace RelicsAPI.Data.Entities
         public DateTime CreatedTimeUTC { get; set; }
 
         public ICollection<Relic> Relics { get; set; }
-    }
 
+        [Required]
+        public string UserId { get; set; }
+
+        public User User { get; set; }
+    }
     public enum Status
     {
         Processing,

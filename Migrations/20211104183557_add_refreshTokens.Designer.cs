@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RelicsAPI.Data;
 
 namespace RelicsAPI.Migrations
 {
     [DbContext(typeof(RelicsContext))]
-    partial class RelicsContextModelSnapshot : ModelSnapshot
+    [Migration("20211104183557_add_refreshTokens")]
+    partial class add_refreshTokens
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,7 +180,7 @@ namespace RelicsAPI.Migrations
                     b.Property<DateTime>("ExpiryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsRevoked")
+                    b.Property<bool>("IsRevorked")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsUsed")
