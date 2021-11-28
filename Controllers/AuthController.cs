@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using RelicsAPI.Auth;
 using RelicsAPI.Auth.Model;
 using RelicsAPI.Data.DTOs.Auth;
-using System;
-using System.IdentityModel.Tokens.Jwt;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace RelicsAPI.Controllers
@@ -31,10 +30,10 @@ namespace RelicsAPI.Controllers
         [Route("register")]
         public async Task<ActionResult> Register(RegisterUserDTO registerUserDTO)
         {
-            var user = await _userManager.FindByNameAsync(registerUserDTO.UserName);
+            var user = await _userManager.FindByEmailAsync(registerUserDTO.Email);
 
             if (user != null)
-                return BadRequest("Request invalid."); // user already exists
+                return BadRequest("Such email already in use !");
 
             var newUser = new User
             {
@@ -45,7 +44,7 @@ namespace RelicsAPI.Controllers
             var createdUserResult = await _userManager.CreateAsync(newUser, registerUserDTO.Password);
 
             if (!createdUserResult.Succeeded)
-                return BadRequest("Could not create user.");
+                return BadRequest("Name already in use !");
 
             await _userManager.AddToRoleAsync(newUser, UserRoles.Customer);
 
@@ -56,15 +55,15 @@ namespace RelicsAPI.Controllers
         [Route("login")]
         public async Task<ActionResult> Login(LoginDTO loginDTO)
         {
-            var user = await _userManager.FindByNameAsync(loginDTO.UserName);
+            var user = await _userManager.FindByEmailAsync(loginDTO.Email);
 
             if (user == null)
-                return BadRequest("User name or password is invalid.");
+                return BadRequest("User email or password is invalid.");
 
             var isPasswordValid = await _userManager.CheckPasswordAsync(user, loginDTO.Password);
 
             if (!isPasswordValid)
-                return BadRequest("User name or password is invalid.");
+                return BadRequest("User email or password is invalid.");
 
             var accessToken = await _tokenManager.CreateAccessTokenAsync(user);
 

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RelicsAPI.Data.Entities;
-using System.Text.Json;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using RelicsAPI.Data.DTOs.Auth;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace RelicsAPI.Data
 {
@@ -28,12 +30,17 @@ namespace RelicsAPI.Data
 
             builder.Entity<Relic>().Property(p => p.Materials)
                 .HasConversion(
-                    v => JsonSerializer.Serialize(v, default),
-                    v => JsonSerializer.Deserialize<List<string>>(v, default));
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<string[]>(v));
 
             builder.Entity<Order>().Property(r => r.Status)
                 .HasConversion(v => v.ToString(),
                                v => (Status)Enum.Parse(typeof(Status),v ));
+
+            //builder.Entity<Relic>().Property(p => p.Image)
+            //    .HasConversion(
+            //        v => JsonConvert.SerializeObject(v),
+            //        v => JsonConvert.DeserializeObject<byte[]>(v));
 
             //builder.Entity<Relic>(entity =>
             //{

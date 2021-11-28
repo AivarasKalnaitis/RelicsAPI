@@ -12,7 +12,7 @@ namespace RelicsAPI.Data.Entities
 
         public byte[] Image { get; set; }
 
-        public List<string> Materials { get; set; }
+        public string[] Materials { get; set; }
 
         public string Creator { get; set; }
 

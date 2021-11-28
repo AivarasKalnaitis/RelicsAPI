@@ -86,7 +86,7 @@ namespace RelicsAPI.Controllers
             var authorizationResult = await _authorizationService.AuthorizeAsync(User, oldOrder, PolicyNames.SameUser);
 
             if (!authorizationResult.Succeeded)
-                return Forbid("Forbidden request"); // grazina 403, bet galima naudoti 404, kad neisduoti, jog toks resursas jau yra, 401 - kai blogas/nelegalus tokenas
+                return Forbid(); // grazina 403, bet galima naudoti 404, kad neisduoti, jog toks resursas jau yra, 401 - kai blogas/nelegalus tokenas
 
             _mapper.Map(orderDTO, oldOrder);
 
@@ -107,7 +107,7 @@ namespace RelicsAPI.Controllers
             var authorizationResult = await _authorizationService.AuthorizeAsync(User, order, PolicyNames.SameUser);
 
             if (!authorizationResult.Succeeded)
-                return Forbid("Forbidden request"); // grazina 403, bet galima naudoti 404, kad neisduoti, jog toks resursas jau yra, 401 - kai blogas/nelegalus tokenas
+                return Forbid(); // grazina 403, bet galima naudoti 404, kad neisduoti, jog toks resursas jau yra, 401 - kai blogas/nelegalus tokenas
 
             await _ordersRepository.Delete(order);
 

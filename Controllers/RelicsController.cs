@@ -13,6 +13,7 @@ using RelicsAPI.Data.Repositories;
 namespace RelicsAPI.Controllers
 {
     [ApiController]
+
     [Authorize(Roles = UserRoles.Admin)]
     public class RelicsController : ControllerBase
     {
@@ -78,6 +79,8 @@ namespace RelicsAPI.Controllers
                     break;
                 case "desc(price)":
                     allRelics = allRelics.OrderByDescending(r => r.Price).ToList();
+                    break;
+                default:
                     break;
             }
 

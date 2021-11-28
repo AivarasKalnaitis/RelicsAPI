@@ -30,5 +30,6 @@ namespace RelicsAPI
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+        
     }
 }

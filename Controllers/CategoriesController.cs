@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -33,6 +34,7 @@ namespace RelicsAPI.Controllers
         }
 
         [HttpGet("{categoryId}")]
+        [AllowAnonymous]
         public async Task<ActionResult<CategoryDTO>> GetById(int categoryId)
         {
             var category = await _categoriesRepository.GetById(categoryId);
@@ -47,6 +49,7 @@ namespace RelicsAPI.Controllers
         public async Task<ActionResult<CategoryDTO>> Create(CreateCategoryDTO categoryDTO)
         {
             var category = _mapper.Map<Category>(categoryDTO);
+            category.Name = char.ToUpper(category.Name[0]) + category.Name[1..];
 
             await _categoriesRepository.Create(category);
 

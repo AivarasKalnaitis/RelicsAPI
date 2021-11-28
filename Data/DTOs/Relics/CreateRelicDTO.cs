@@ -11,7 +11,7 @@ namespace RelicsAPI.Data.DTOs.Relics
 
         [Required] [MinLength(3)] string Name,
 
-        List<string> Materials,
+        string[] Materials,
 
         string Creator,
 
@@ -19,7 +19,7 @@ namespace RelicsAPI.Data.DTOs.Relics
 
         [Required] [MinLength(3)] string Period,
 
-        [Required] byte[] Image,
+        byte[] Image,
 
         string YearMade
     );

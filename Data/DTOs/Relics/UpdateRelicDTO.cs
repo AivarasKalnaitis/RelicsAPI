@@ -9,9 +9,9 @@ namespace RelicsAPI.Data.DTOs.Relics
     public record UpdateRelicDTO(
         [Required] [MinLength(3)] string Name,
 
-        List<string> Materials,
+        string[] Materials,
 
-        [Required] byte[] Image,
+        byte[] Image,
 
         string Creator,
 

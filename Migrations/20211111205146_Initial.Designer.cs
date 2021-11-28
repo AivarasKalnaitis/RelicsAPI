@@ -10,8 +10,8 @@ using RelicsAPI.Data;
 namespace RelicsAPI.Migrations
 {
     [DbContext(typeof(RelicsContext))]
-    [Migration("20211104130816_required_userId_onOrder")]
-    partial class required_userId_onOrder
+    [Migration("20211111205146_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -165,6 +165,41 @@ namespace RelicsAPI.Migrations
                     b.HasIndex("RelicsId");
 
                     b.ToTable("OrderRelic");
+                });
+
+            modelBuilder.Entity("RelicsAPI.Data.DTOs.Auth.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AddedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRevoked")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("JwtId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("RelicsAPI.Data.DTOs.Auth.User", b =>
@@ -383,6 +418,15 @@ namespace RelicsAPI.Migrations
                         .HasForeignKey("RelicsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RelicsAPI.Data.DTOs.Auth.RefreshToken", b =>
+                {
+                    b.HasOne("RelicsAPI.Data.DTOs.Auth.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RelicsAPI.Data.Entities.Order", b =>

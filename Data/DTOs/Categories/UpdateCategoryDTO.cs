@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace RelicsAPI.Data.DTOs.Categories
 {
-    public record UpdateCategoryDTO([Required] [MinLength(3)] string Name);
+    public record UpdateCategoryDTO([Required] [MinLength(3)][UniqueCategoryName(ErrorMessage = "Category name must be unique")] string Name);
 }

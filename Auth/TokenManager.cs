@@ -51,12 +51,12 @@ namespace RelicsAPI.Auth
                 new Claim(CustomClaims.UserId, user.Id.ToString()),
             };
 
-            authClaims.AddRange(userRoles.Select(userRole => new Claim(ClaimTypes.Role, userRole)));
+            authClaims.AddRange(userRoles.Select(userRole => new Claim("roles", userRole)));
 
             var accessSecurityToken = new JwtSecurityToken(
                 issuer: _issuer,
                 audience: _audience,
-                expires: DateTime.UtcNow.AddMinutes(60), // 5-10 mins
+                expires: DateTime.UtcNow.AddMinutes(15), // 5-10 mins
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(_authSigningKey, SecurityAlgorithms.HmacSha256)
             );
@@ -186,7 +186,7 @@ namespace RelicsAPI.Auth
 
                 return await CreateAccessTokenAsync(dbUser);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
